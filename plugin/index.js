@@ -6,7 +6,6 @@ const fs = require('fs');
 const proxyCode = fs.readFileSync(`${__dirname}/proxy.js`, 'utf8');
 
 const proxyAST = parser.parse(proxyCode);
-console.log(proxyAST.program.body);
 
 /**
  * The "Map" of if the "./proxy.js" code should be injected to the top of the Program
@@ -42,6 +41,16 @@ module.exports = () => {
 								});
 
 								if (!isFunc) return;
+
+								const notMutateArgs = path.node.expression.arguments;
+								
+								let inBodyArgsToProxy = [];
+								if (notMutateArgs.length) {
+									// We expect the first item in the array to be an array of strings
+									inBodyArgsToProxy = notMutateArgs[0].elements.map(node => node.value)
+								}
+
+								debugger;
 
 								Programs.set(programPath.node, true);
 

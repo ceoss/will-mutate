@@ -1,11 +1,11 @@
 const global = {prop: "test"};
 
-$shouldNotMutate(foo);
+$shouldNotMutate(['foo']);
 const foo = (foo) => {
 	foo.prop = "pie";
 };
 
-$shouldNotMutate(foo);
+$shouldNotMutate(['foo']);
 function bar(foo) {
 	foo.prop = 'Test';
 }
@@ -13,7 +13,7 @@ function bar(foo) {
 /**
  * This does not currently work
  */
-$shouldNotMutate(foo);
+$shouldNotMutate(['foo']);
 const pizza = foo => console.log(foo);
 
 foo(global);
