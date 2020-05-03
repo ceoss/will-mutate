@@ -45,3 +45,5 @@ const proxify = (object, options = {}) => {
 		}
 	});
 };
+
+module.exports = proxify;
