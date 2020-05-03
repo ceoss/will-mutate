@@ -10,6 +10,9 @@ function bar(poop) {
 	poop.prop = 'Test';
 }
 
+/**
+ * This does not currently work
+ */
 $shouldNotMutate(poop);
 const pizza = a => console.log(a);
 
