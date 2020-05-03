@@ -1,5 +1,5 @@
 {
-	"name": "BabelPlayground",
+	"name": "will-mutate",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
@@ -12,7 +12,8 @@
 	"license": "ISC",
 	"devDependencies": {
 		"@babel/cli": "^7.4.4",
-		"@babel/core": "^7.4.5"
+		"@babel/core": "^7.4.5",
+		"@babel/traverse": "^7.9.6"
 	},
 	"dependencies": {
 		"@babel/preset-env": "^7.4.5"
