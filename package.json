@@ -1,0 +1,20 @@
+{
+	"name": "BabelPlayground",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"debug": "node --inspect-brk ./node_modules/@babel/cli/bin/babel.js src --out-dir lib",
+		"build": "babel src --out-dir lib"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@babel/cli": "^7.4.4",
+		"@babel/core": "^7.4.5"
+	},
+	"dependencies": {
+		"@babel/preset-env": "^7.4.5"
+	}
+}
