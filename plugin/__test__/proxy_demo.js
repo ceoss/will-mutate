@@ -1,24 +1,21 @@
 (() => {
-	const poop = proxify(
-		Object.assign(
-			Object.create({
-				protoTest: 'old',
-			}),
-			{
-				test: 'old',
-				poop: {
-					test: 'old',
-				},
+	const foo = proxify(
+		Object.assign(Object.create({
+			protoTest: "old"
+		}), {
+			test: "old",
+			foo: {
+				test: "old"
 			}
-		),
-		{
+		}), {
 			deep: true,
-			prototype: true,
+			prototype: true
 		}
 	);
 
-	// poop.test = "new"; // Errors
-	// poop.poop.test = "new"; // Errors when `deep`
-	// Object.getPrototypeOf(poop).test = "poop"; // Errors when `prototype`
-	// Object.setPrototypeOf(poop, {}); // Errors
+	// foo.test = "new"; // Errors
+	// delete foo.test; // Errors
+	// foo.foo.test = "new"; // Errors when `deep`
+	// Object.getPrototypeOf(foo).test = "foo"; // Errors when `prototype`
+	// Object.setPrototypeOf(foo, {}); // Errors when `prototype`
 })();

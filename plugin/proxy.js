@@ -28,19 +28,19 @@ const proxify = (object, options = {}) => {
 		},
 
 
-		/* 
+		/*
 			Set - Errors *sadface*
 		*/
 		set() {
-			if (triggeredByFunction) throw new Error('Poop!');
+			if (triggeredByFunction) throw new Error('Darn!');
 			return Reflect.set(...arguments);
 		},
 		setPrototypeOf() {
-			if (triggeredByFunction) throw new Error('Poop!');
+			if (prototype && triggeredByFunction) throw new Error('Darn!');
 			return Reflect.setPrototypeOf(...arguments);
 		},
 		deleteProperty() {
-			if (triggeredByFunction) throw new Error('Poop!');
+			if (triggeredByFunction) throw new Error('Darn!');
 			return Reflect.deleteProperty(...arguments);
 		}
 	});
