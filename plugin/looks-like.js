@@ -16,4 +16,21 @@ const looksLike = (a, b) => {
 
 const isPrimitive = (val) => val == null || /^[sbn]/.test(typeof val);
 
-module.exports = looksLike;
+const isModuleExports = node => looksLike(node, {
+	type: 'ExpressionStatement',
+	expression: {
+		left: {
+			object: {
+				name: 'module'
+			},
+			property: {
+				name: "exports"
+			}
+		}
+	}
+})
+
+module.exports = {
+	looksLike,
+	isModuleExports
+};
