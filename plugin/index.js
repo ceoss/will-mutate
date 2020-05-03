@@ -1,6 +1,12 @@
 const looksLike = require('./looks-like');
 const t = require('@babel/types');
 const { default: traverse } = require('@babel/traverse');
+const parser = require('@babel/parser');
+const fs = require('fs');
+const proxyCode = fs.readFileSync(`${__dirname}/proxy.js`, 'utf8');
+
+const proxyAST = parser.parse(proxyCode);
+console.log(proxyAST.program.body);
 
 /**
  * The "Map" of if the "./proxy.js" code should be injected to the top of the Program
@@ -48,7 +54,7 @@ module.exports = () => {
 									noScope: true,
 									enter(path) {
 										if (path.node.type === 'BlockStatement') {
-											console.log('HELLO 2');
+											console.log('WELCOME TO THE FUNCTION BODY OF THE $shouldNotMutate "Decorator');
 											// debugger;
 										}
 									},
@@ -58,8 +64,14 @@ module.exports = () => {
 					});
 				},
 				exit(programPath) {
-					const val = Programs.get(programPath.node);
-					console.log('PLEASE ONLY RUN ONCE', val);
+          const val = Programs.get(programPath.node);
+          /**
+           * If the Program has any utilization of the $shouldNotMutate, then we'll inject the code from the
+           * proxy.js file to then be able to use that function in the AST
+           */
+          if (val) {
+            programPath.node.body = [...proxyAST.program.body, ...programPath.node.body];
+          }
 				},
 			},
 		},
