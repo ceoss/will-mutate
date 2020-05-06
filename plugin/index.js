@@ -25,12 +25,12 @@ module.exports = () => {
                 enter(programPath) {
                     traverse(programPath.node, {
                         noScope: true,
-                        enter(path) {
+                        enter(decoratorPath) {
                             /**
                              * Look for all $shouldNotMutate functions
                              */
-                            if (path.node.type === 'ExpressionStatement') {
-                                const isFunc = looksLike(path, {
+                            if (decoratorPath.node.type === 'ExpressionStatement') {
+                                const isFunc = looksLike(decoratorPath, {
                                     node: {
                                         type: 'ExpressionStatement',
                                         expression: {
@@ -43,7 +43,7 @@ module.exports = () => {
 
                                 if (!isFunc) return;
 
-                                const notMutateArgs = path.node.expression.arguments;
+                                const notMutateArgs = decoratorPath.node.expression.arguments;
 
                                 let inBodyArgsToProxy = [];
                                 if (notMutateArgs.length) {
@@ -51,21 +51,24 @@ module.exports = () => {
                                     inBodyArgsToProxy = notMutateArgs[0].elements.map(node => node.value)
                                 }
 
-                                debugger;
+                                decoratorPath.remove();
 
+                                /**
+                                 * Tell the compiler to inject the `proxify` code at the top of the file
+                                 */
                                 Programs.set(programPath.node, true);
 
                                 // Treat the function as a "decorator" for a function. AKA get the function immediately
                                 // After the function itself
-                                const functionNodePath = path.getSibling(path.key + 1);
+                                const functionNodePath = decoratorPath.getSibling(decoratorPath.key + 1);
 
                                 // Traverse the path to get the "BlockStatement" so we can mutate the code on it's own
                                 traverse(functionNodePath.node, {
                                     noScope: true,
-                                    enter(path) {
-                                        if (path.node.type === 'BlockStatement') {
+                                    enter(blockStatementPath) {
+                                        if (blockStatementPath.node.type === 'BlockStatement') {
                                             console.log('WELCOME TO THE FUNCTION BODY OF THE $shouldNotMutate "Decorator');
-                                            // debugger;
+                                            debugger;
                                         }
                                     },
                                 });
@@ -87,3 +90,7 @@ module.exports = () => {
         },
     };
 };
+
+function createVoid0() {
+    return t.unaryExpression("void", t.numericLiteral(0));
+}
