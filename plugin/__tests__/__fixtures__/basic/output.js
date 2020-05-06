@@ -135,16 +135,18 @@ const global = {
   prop: "test"
 };
 
-const foo = foo => {
+const foo = (foo, other) => {
   const _will_mutate_check_foo = _will_mutate_check_proxify(foo);
 
   _will_mutate_check_foo.prop = "pie";
+  other.prop = "Don't change me";
 };
 
-function bar(foo) {
+function bar(foo, other) {
   const _will_mutate_check_foo = _will_mutate_check_proxify(foo);
 
   _will_mutate_check_foo.prop = 'Test';
+  other.prop = "Don't change me";
 }
 /**
  * This does not currently work
