@@ -8,7 +8,8 @@ const propPath = function (path, property) {
 	}
 };
 
-const proxify = (target, options = {}) => {
+// DO NOT CHANGE THE VARIABLE NAME WITHOUT UPDATING THE PLUGIN CODE
+const _will_mutate_check_proxify = (target, options = {}) => {
 	// Early return for non-objects
 	if (!(target instanceof Object)) return target;
 
@@ -50,10 +51,10 @@ const proxify = (target, options = {}) => {
 
 			if (deep) {
 				if (isValueDesc) {
-					descriptor.value = proxify(descriptor.value, {...options, path, name: prop});
+					descriptor.value = _will_mutate_check_proxify(descriptor.value, {...options, path, name: prop});
 				} else {
-					// descriptor.set = proxify(descriptor.set, {...options, path, name: prop}); // TODO: apply traps
-					// descriptor.get = proxify(descriptor.get, {...options, path, name: prop}); // TODO: apply traps
+					// descriptor.set = _will_mutate_check_proxify(descriptor.set, {...options, path, name: prop}); // TODO: apply traps
+					// descriptor.get = _will_mutate_check_proxify(descriptor.get, {...options, path, name: prop}); // TODO: apply traps
 				}
 			} else if (!isValueDesc) {
 				// descriptor.set = descriptor.set && new Proxy(descriptor.set, descriptorSetHandler); // TODO: apply traps
@@ -95,7 +96,7 @@ const proxify = (target, options = {}) => {
 
 			if (trap === "getPrototypeOf") prop = "__proto__";
 			const real = Reflect[trap](...reflectArguments);
-			return proxify(real, {...options, path, name: prop});
+			return _will_mutate_check_proxify(real, {...options, path, name: prop});
 		};
 	};
 	deep && addDeepGetTrap("get"); // Covered by getOwnPropertyDescriptor, but is more specific
@@ -130,4 +131,4 @@ const proxify = (target, options = {}) => {
 	return new Proxy(dummyTarget, handler);
 };
 
-module.exports = proxify;
+module.exports = _will_mutate_check_proxify;

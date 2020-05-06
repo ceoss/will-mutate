@@ -6,9 +6,10 @@ const propPath = function (path, property) {
   } else {
     return `${path}["${property}"]`;
   }
-};
+}; // DO NOT CHANGE THE VARIABLE NAME WITHOUT UPDATING THE PLUGIN CODE
 
-const proxify = (target, options = {}) => {
+
+const _will_mutate_check_proxify = (target, options = {}) => {
   // Early return for non-objects
   if (!(target instanceof Object)) return target; // Options
 
@@ -46,12 +47,12 @@ const proxify = (target, options = {}) => {
 
       if (deep) {
         if (isValueDesc) {
-          descriptor.value = proxify(descriptor.value, { ...options,
+          descriptor.value = _will_mutate_check_proxify(descriptor.value, { ...options,
             path,
             name: prop
           });
-        } else {// descriptor.set = proxify(descriptor.set, {...options, path, name: prop}); // TODO: apply traps
-          // descriptor.get = proxify(descriptor.get, {...options, path, name: prop}); // TODO: apply traps
+        } else {// descriptor.set = _will_mutate_check_proxify(descriptor.set, {...options, path, name: prop}); // TODO: apply traps
+          // descriptor.get = _will_mutate_check_proxify(descriptor.get, {...options, path, name: prop}); // TODO: apply traps
         }
       } else if (!isValueDesc) {} // descriptor.set = descriptor.set && new Proxy(descriptor.set, descriptorSetHandler); // TODO: apply traps
 
@@ -91,7 +92,7 @@ const proxify = (target, options = {}) => {
       reflectArguments[0] = target;
       if (trap === "getPrototypeOf") prop = "__proto__";
       const real = Reflect[trap](...reflectArguments);
-      return proxify(real, { ...options,
+      return _will_mutate_check_proxify(real, { ...options,
         path,
         name: prop
       });
@@ -135,11 +136,15 @@ const global = {
 };
 
 const foo = foo => {
-  foo.prop = "pie";
+  const _will_mutate_check_foo = _will_mutate_check_proxify(foo);
+
+  _will_mutate_check_foo.prop = "pie";
 };
 
 function bar(foo) {
-  foo.prop = 'Test';
+  const _will_mutate_check_foo = _will_mutate_check_proxify(foo);
+
+  _will_mutate_check_foo.prop = 'Test';
 }
 /**
  * This does not currently work
