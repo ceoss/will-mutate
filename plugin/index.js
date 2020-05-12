@@ -4,6 +4,7 @@ const {default: traverse} = require('@babel/traverse');
 const parser = require('@babel/parser');
 const fs = require('fs');
 
+const proxifyFnName = '_will_mutate_check_proxify';
 const proxyCode = fs.readFileSync(`${__dirname}/proxy.js`, 'utf8');
 const proxyAST = parser.parse(proxyCode);
 const proxyBodyAST = proxyAST.program.body.filter(node => !isModuleExports(node));
@@ -12,6 +13,21 @@ const proxyBodyAST = proxyAST.program.body.filter(node => !isModuleExports(node)
  * The "Map" of if the "./proxy.js" code should be injected to the top of the Program
  */
 const Programs = new WeakMap();
+
+/**
+ * @param {string} variableName - The name of the variable to mock out with `proxify`
+ */
+const getVariableMockCodeAST = (variableName) => {
+    const newVarName = `_will_mutate_check_${variableName}`;
+    const codeAST = parser.parse(`
+        const ${newVarName} = ${proxifyFnName}(${variableName});
+    `.trim()).program.body;
+    return {
+        codeAST,
+        newVarName,
+        oldVarName: variableName
+    }
+}
 
 module.exports = () => {
     return {
@@ -66,9 +82,34 @@ module.exports = () => {
                                 traverse(functionNodePath.node, {
                                     noScope: true,
                                     enter(blockStatementPath) {
+                                        // This is the "body" of the function we're trying to mock data out of
                                         if (blockStatementPath.node.type === 'BlockStatement') {
-                                            console.log('WELCOME TO THE FUNCTION BODY OF THE $shouldNotMutate "Decorator');
+
+                                            const mockCodeArr = inBodyArgsToProxy.map(varNameToChange => getVariableMockCodeAST(varNameToChange))
+
+                                            // Flat map since the `codeAST` is itself an array
+                                            const codeASTToAppend = mockCodeArr.flatMap(val => val.codeAST);
+
+                                            blockStatementPath.node.body = [...codeASTToAppend, ...blockStatementPath.node.body];
+
                                             debugger;
+                                            traverse(blockStatementPath.node, {
+                                                noScope: true,
+                                                enter(identifierPath) {
+                                                    if (
+                                                        identifierPath.node.type === "Identifier"
+                                                    ) {
+                                                        debugger;
+                                                        const val = mockCodeArr.find(val => val.oldVarName === identifierPath.node.name)
+                                                        // If it's not an identifier we need, ignore it
+                                                        if (!val) return;
+                                                        // If this LOC isn't present, then it will mutate the variable name of the __proxify function
+                                                        if (identifierPath.parent.type === "CallExpression" && identifierPath.parent.callee.name === proxifyFnName) return;
+                                                        debugger;
+                                                        identifierPath.replaceWith(t.identifier(val.newVarName));
+                                                    }
+                                                }
+                                            });
                                         }
                                     },
                                 });
