@@ -9,11 +9,11 @@ describe("Proxy util", () => {
 			{
 				prop: "old",
 				obj: {
-					prop: "old"
+					prop: "old",
 				},
 				classy: class {
 					constructor() {}
-				}
+				},
 			}
 		);
 		Object.defineProperty(nakedTarget, "readOnly", {
@@ -21,13 +21,13 @@ describe("Proxy util", () => {
 		});
 		Object.defineProperty(nakedTarget, "accessor", {
 			set() {},
-			get() {return {};}
+			get() {return {};},
 		});
 		target = proxify(
 			nakedTarget,
 			{deep: true, prototype: true}
 		);
-	})
+	});
 	test("to throw when assigning a prop", async () => {
 		expect(() => {
 			target.prop = "New";
@@ -54,9 +54,9 @@ describe("Proxy util", () => {
 // Object.defineProperty(target, "prop", {value: "new"}); // Errors
 // Object.getPrototypeOf(target).protoProp = "new"; // Errors when `prototype`
 // Object.getOwnPropertyDescriptor(target, "obj").value.prop = "new"; // Errors when `deep`;
-// Object.getOwnPropertyDescriptor(target, "accessor").set("new"); // TODO: make error (accessor apply trap proxying)
-// Object.getOwnPropertyDescriptor(target, "accessor").set.prop = "new"; // TODO: make error (accessor apply trap proxying)
-// Object.getOwnPropertyDescriptor(target, "accessor").get().prop = "new"; // TODO: make error (accessor apply trap proxying)
+// Object.getOwnPropertyDescriptor(target, "accessor").set("new"); // TODO: [>=1] before publishing stable - make error (accessor apply trap proxying)
+// Object.getOwnPropertyDescriptor(target, "accessor").set.prop = "new"; // TODO: [>=1] before publishing stable - make error (accessor apply trap proxying)
+// Object.getOwnPropertyDescriptor(target, "accessor").get().prop = "new"; // TODO: [>=1] before publishing stable - make error (accessor apply trap proxying)
 // Object.setPrototypeOf(target, {}); // Errors when `prototype`
 // Object.preventExtensions(target.prop); // Errors
-// TODO: add tests to find the limitations of the proxy, dummytarget, etc.
+// TODO: [>=1] before publishing stable - add tests to find the limitations of the proxy, dummytarget, etc.

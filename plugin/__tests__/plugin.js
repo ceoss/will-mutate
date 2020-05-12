@@ -1,8 +1,8 @@
-import path from 'path';
-import { create } from 'babel-test';
+import path from "path";
+import {create} from "babel-test";
 
-const { fixtures } = create({
-    plugins: [require.resolve('..')],
+const {fixtures} = create({
+	plugins: [require.resolve("..")],
 });
 
-fixtures('my plugin', path.join(__dirname, '__fixtures__'));
+fixtures("my plugin", path.join(__dirname, "__fixtures__"));

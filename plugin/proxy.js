@@ -1,5 +1,5 @@
 const propPath = function (path, property) {
-	if (/^[a-zA-Z_$][\w$]*$/.test(property)) {
+	if (/^[$A-Z_a-z][\w$]*$/.test(property)) {
 		return `${path}.${property}`;
 	} else if (/^\d$/.test(property)) {
 		return `${path}[${property}]`;
@@ -17,14 +17,14 @@ const _will_mutate_check_proxify = (target, options = {}) => {
 	const {deep = false, prototype = false} = options;
 
 	// Naming properties for mutation tracing in errors
-	let {
+	const {
 		name = (typeof target.name === "string" && target.name),
-		path = "target"
 	} = options;
+	let {path = "target"} = options;
 	if (name !== "undefined" && name !== false) path = propPath(path, name);
 
 	// If the proxy trap was triggered by the function to test
-	// TODO: implement, possibly make optional?
+	// TODO: [>=1] evaluate for v1 - implement, possibly make optional?
 	const triggeredByFunction = true;
 
 	// Proxy handler
@@ -53,11 +53,11 @@ const _will_mutate_check_proxify = (target, options = {}) => {
 				if (isValueDesc) {
 					descriptor.value = _will_mutate_check_proxify(descriptor.value, {...options, path, name: prop});
 				} else {
-					// descriptor.set = _will_mutate_check_proxify(descriptor.set, {...options, path, name: prop}); // TODO: apply traps
-					// descriptor.get = _will_mutate_check_proxify(descriptor.get, {...options, path, name: prop}); // TODO: apply traps
+					// descriptor.set = _will_mutate_check_proxify(descriptor.set, {...options, path, name: prop}); // TODO: [>=1] before publishing stable - add apply traps
+					// descriptor.get = _will_mutate_check_proxify(descriptor.get, {...options, path, name: prop}); // TODO: [>=1] before publishing stable - add apply traps
 				}
 			} else if (!isValueDesc) {
-				// descriptor.set = descriptor.set && new Proxy(descriptor.set, descriptorSetHandler); // TODO: apply traps
+				// descriptor.set = descriptor.set && new Proxy(descriptor.set, descriptorSetHandler); // TODO: [>=1] before publishing stable - add apply traps
 			}
 
 			/*
@@ -79,7 +79,7 @@ const _will_mutate_check_proxify = (target, options = {}) => {
 			const reflectArguments = [...arguments];
 			reflectArguments[0] = target;
 			return Reflect[trap](...reflectArguments);
-		}
+		};
 	};
 	addNoopReflectUsingRealTargetTrap("isExtensible");
 	addNoopReflectUsingRealTargetTrap("has");
