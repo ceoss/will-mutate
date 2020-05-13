@@ -6,7 +6,7 @@ const looksLike = (a, b) => {
 		Object.keys(b).every((bKey) => {
 			const bVal = b[bKey];
 			const aVal = a[bKey];
-			if (typeof bVal === 'function') {
+			if (typeof bVal === "function") {
 				return bVal(aVal);
 			}
 			return isPrimitive(bVal) ? bVal === aVal : looksLike(aVal, bVal);
@@ -14,23 +14,23 @@ const looksLike = (a, b) => {
 	);
 };
 
-const isPrimitive = (val) => val == null || /^[sbn]/.test(typeof val);
+const isPrimitive = (val) => val == undefined || /^[bns]/.test(typeof val);
 
 const isModuleExports = node => looksLike(node, {
-	type: 'ExpressionStatement',
+	type: "ExpressionStatement",
 	expression: {
 		left: {
 			object: {
-				name: 'module'
+				name: "module",
 			},
 			property: {
-				name: "exports"
-			}
-		}
-	}
-})
+				name: "exports",
+			},
+		},
+	},
+});
 
 module.exports = {
 	looksLike,
-	isModuleExports
+	isModuleExports,
 };

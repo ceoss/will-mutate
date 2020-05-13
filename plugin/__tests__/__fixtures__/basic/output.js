@@ -1,5 +1,5 @@
 const propPath = function (path, property) {
-  if (/^[a-zA-Z_$][\w$]*$/.test(property)) {
+  if (/^[$A-Z_a-z][\w$]*$/.test(property)) {
     return `${path}.${property}`;
   } else if (/^\d$/.test(property)) {
     return `${path}[${property}]`;
@@ -18,12 +18,14 @@ const _will_mutate_check_proxify = (target, options = {}) => {
     prototype = false
   } = options; // Naming properties for mutation tracing in errors
 
+  const {
+    name = typeof target.name === "string" && target.name
+  } = options;
   let {
-    name = typeof target.name === "string" && target.name,
     path = "target"
   } = options;
   if (name !== "undefined" && name !== false) path = propPath(path, name); // If the proxy trap was triggered by the function to test
-  // TODO: implement, possibly make optional?
+  // TODO: [>=1] evaluate for v1 - implement, possibly make optional?
 
   const triggeredByFunction = true; // Proxy handler
 
@@ -51,10 +53,10 @@ const _will_mutate_check_proxify = (target, options = {}) => {
             path,
             name: prop
           });
-        } else {// descriptor.set = _will_mutate_check_proxify(descriptor.set, {...options, path, name: prop}); // TODO: apply traps
-          // descriptor.get = _will_mutate_check_proxify(descriptor.get, {...options, path, name: prop}); // TODO: apply traps
+        } else {// descriptor.set = _will_mutate_check_proxify(descriptor.set, {...options, path, name: prop}); // TODO: [>=1] before publishing stable - add apply traps
+          // descriptor.get = _will_mutate_check_proxify(descriptor.get, {...options, path, name: prop}); // TODO: [>=1] before publishing stable - add apply traps
         }
-      } else if (!isValueDesc) {} // descriptor.set = descriptor.set && new Proxy(descriptor.set, descriptorSetHandler); // TODO: apply traps
+      } else if (!isValueDesc) {} // descriptor.set = descriptor.set && new Proxy(descriptor.set, descriptorSetHandler); // TODO: [>=1] before publishing stable - add apply traps
 
       /*
       	Add read-only props to `dummyTarget` to meet the below invariant:
@@ -131,7 +133,7 @@ const _will_mutate_check_proxify = (target, options = {}) => {
   return new Proxy(dummyTarget, handler);
 };
 
-const global = {
+const globalVariable = {
   prop: "test"
 };
 
@@ -145,7 +147,7 @@ const foo = (foo, other) => {
 function bar(foo, other) {
   const _will_mutate_check_foo = _will_mutate_check_proxify(foo);
 
-  _will_mutate_check_foo.prop = 'Test';
+  _will_mutate_check_foo.prop = "Test";
   other.prop = "Don't change me";
 }
 /**
@@ -153,7 +155,7 @@ function bar(foo, other) {
  */
 
 
-const pizza = foo => console.log(foo);
+const pizza = foo => JSON.parse("{}");
 
-foo(global);
-bar(global);
+foo(globalVariable);
+bar(globalVariable);
