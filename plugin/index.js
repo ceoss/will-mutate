@@ -128,7 +128,3 @@ module.exports = () => {
 		},
 	};
 };
-
-function createVoid0() {
-	return t.unaryExpression("void", t.numericLiteral(0));
-}
