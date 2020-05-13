@@ -1,4 +1,4 @@
-const global = {prop: "test"};
+const globalVariable = {prop: "test"};
 
 $shouldNotMutate(["foo"]);
 const foo = (foo, other) => {
@@ -18,5 +18,5 @@ function bar(foo, other) {
 $shouldNotMutate(["foo"]);
 const pizza = foo => JSON.parse("{}");
 
-foo(global);
-bar(global);
+foo(globalVariable);
+bar(globalVariable);

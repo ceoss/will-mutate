@@ -1,4 +1,4 @@
-const global = {prop: "test"};
+const globalVariable = {prop: "test"};
 
 $shouldNotMutate(["foo"]);
 const foo = (foo) => {
@@ -16,5 +16,5 @@ function bar(foo) {
 $shouldNotMutate(["foo"]);
 const pizza = foo => console.log(foo);
 
-foo(global);
-bar(global);
+foo(globalVariable);
+bar(globalVariable);

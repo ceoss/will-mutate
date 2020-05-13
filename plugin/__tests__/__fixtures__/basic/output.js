@@ -133,7 +133,7 @@ const _will_mutate_check_proxify = (target, options = {}) => {
   return new Proxy(dummyTarget, handler);
 };
 
-const global = {
+const globalVariable = {
   prop: "test"
 };
 
@@ -157,5 +157,5 @@ function bar(foo, other) {
 
 const pizza = foo => JSON.parse("{}");
 
-foo(global);
-bar(global);
+foo(globalVariable);
+bar(globalVariable);

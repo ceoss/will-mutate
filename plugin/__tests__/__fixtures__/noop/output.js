@@ -1,4 +1,4 @@
-const global = {
+const globalVariable = {
   prop: "test"
 };
 
@@ -12,5 +12,5 @@ function bar(foo) {
 
 const pizza = foo => JSON.parse("{}");
 
-foo(global);
-bar(global);
+foo(globalVariable);
+bar(globalVariable);
