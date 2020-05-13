@@ -151,6 +151,7 @@ module.exports = {
 		"\\\\node_modules\\\\",
 		"\\\\__fixtures__\\\\",
 		"/__fixtures_/",
+		"__fixtures_",
 		"/node_modules/",
 	],
 
@@ -184,9 +185,7 @@ module.exports = {
 	// verbose: undefined,
 
 	// An array of regexp patterns that are matched against all source file paths before re-running tests in watch mode
-	"watchPathIgnorePatterns": [
-		"__fixtures__\\/[^/]+\\/(output|error)\\.js",
-	],
+	watchPathIgnorePatterns: ["__fixtures__\\/[^/]+\\/(output|error)\\.js"],
 
 	// Whether to use watchman for file crawling
 	// watchman: true,
