@@ -88,7 +88,9 @@ module.exports = () => {
 											const mockCodeArr = inBodyArgsToProxy.map(varNameToChange => getVariableMockCodeAST(varNameToChange));
 
 											// Flat map since the `codeAST` is itself an array
-											const codeASTToAppend = mockCodeArr.flatMap(val => val.codeAST);
+											const codeASTToAppend = mockCodeArr
+												.map((val) => val.codeAST)
+												.reduce((a, b) => a.concat(b), []);
 
 											blockStatementPath.node.body = [...codeASTToAppend, ...blockStatementPath.node.body];
 

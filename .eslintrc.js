@@ -33,6 +33,7 @@ module.exports = {
 	],
 	"ignorePatterns": [
 		"src/foo.js",
+		"lib/foo.js",
 		"notes.js",
 		"**/__fixtures__/**/output.js",
 	],
