@@ -21,6 +21,9 @@ module.exports = {
 			"extends": [
 				"plugin:evelyn/jest",
 			],
+			"rules": {
+				"unicorn/no-null": "off",
+			},
 		},
 		{
 			"files": [

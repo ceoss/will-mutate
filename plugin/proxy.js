@@ -22,8 +22,18 @@ const _will_mutate_check_proxify = (target, options = {}) => {
 	const {
 		name = (typeof target.name === "string" && target.name),
 	} = options;
-	let {path = "target"} = options;
-	if (name !== undefined && name !== false) path = propPath(path, name);
+	const hasName = name !== undefined && name !== false;
+	let pathIsName = false;
+	let {path} = options;
+	if (!path) {
+		if (hasName) {
+			path = name;
+			pathIsName = true;
+		} else {
+			path = "target";
+		}
+	}
+	if (hasName && !pathIsName) path = propPath(path, name);
 
 	// Options for resursive function
 	const recursiveOptions = {
@@ -63,13 +73,36 @@ const _will_mutate_check_proxify = (target, options = {}) => {
 
 		if (deep) {
 			if (isValueDesc) {
-				descriptor.value = _will_mutate_check_proxify(descriptor.value, {...recursiveOptions, name: prop});
+				descriptor.value = _will_mutate_check_proxify(
+					descriptor.value,
+					{
+						...recursiveOptions,
+						name: false, // Hide name, use custom path logic instead
+						path: `${propPath(path, prop)}.descriptor.value`,
+					}
+				);
 			} else {
-				descriptor.get = _will_mutate_check_proxify(descriptor.get, {...recursiveOptions, name: `get(${prop})`, isGetter: true});
+				descriptor.get = _will_mutate_check_proxify(
+					descriptor.get,
+					{
+						...recursiveOptions,
+						name: false, // Hide name, use custom path logic instead
+						path: `${propPath(path, prop)}.descriptor.get`,
+						_isGetter: true,
+					}
+				);
 			}
 		}
 		if (!isValueDesc) {
-			descriptor.set = _will_mutate_check_proxify(descriptor.set, {...recursiveOptions, name: `set(${prop})`, isSetter: true});
+			descriptor.set = _will_mutate_check_proxify(
+				descriptor.set,
+				{
+					...recursiveOptions,
+					name: false, // Hide name, use custom path logic instead
+					path: `${propPath(path, prop)}.descriptor.set`,
+					_isSetter: true,
+				}
+			);
 		}
 
 		/*
@@ -89,8 +122,12 @@ const _will_mutate_check_proxify = (target, options = {}) => {
 			reflectArguments[0] = target;
 
 			if (trap === "getPrototypeOf") prop = "__proto__";
+			if (trap === "apply") {
+				path += "()";
+				prop = false; // Get apply trap doesn't need a prop
+			}
 			const real = Reflect[trap](...reflectArguments);
-			return deep || _isGetter ? _will_mutate_check_proxify(real, {...recursiveOptions, name: prop}) : real; // Will revert to the actual target if not deep
+			return deep || _isGetter ? _will_mutate_check_proxify(real, {...recursiveOptions, path, name: prop}) : real; // Will revert to the actual target if not deep
 		};
 	};
 	addGetTrap("get"); // Covered by getOwnPropertyDescriptor, but is more specific
@@ -101,17 +138,18 @@ const _will_mutate_check_proxify = (target, options = {}) => {
 	// Mutation traps for erroring
 	const addSetTrap = (trap) => {
 		handler[trap] = function (dummyTarget, prop) {
-			// Reflect using the real target, not the dummy
-			const reflectArguments = [...arguments];
-			reflectArguments[0] = target;
-
 			// Naming properties for mutation tracing in errors
-			if (trap !== "preventExtensions") {
+			// Keep path mutuations inside this scope, the `path` available in the closure will not reset if the exception is caught
+			let internalPath = path;
+			if (trap === "apply") {
+				internalPath += "()";
+				prop = false; // Set apply trap doesn't need a prop
+			} else if (trap !== "preventExtensions") {
 				if (trap === "setPrototypeOf") prop = "__proto__";
-				path += `.${prop}`;
+				internalPath = propPath(internalPath, prop);
 			}
 
-			throw new Error(`Mutation assertion failed. \`${trap}\` trap triggered on \`${path}\`.`);
+			throw new Error(`Mutation assertion failed. \`${trap}\` trap triggered on \`${internalPath}\`.`);
 		};
 	};
 	if (!isShallowSetter) {
