@@ -20,6 +20,7 @@ module.exports = {
 			],
 			"extends": [
 				"plugin:evelyn/jest",
+				"plugin:evelyn/source",
 			],
 			"rules": {
 				"unicorn/no-null": "off",

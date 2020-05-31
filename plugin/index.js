@@ -1,11 +1,14 @@
-const {looksLike, isModuleExports} = require("./looks-like");
-const t = require("@babel/types");
-const {default: traverse} = require("@babel/traverse");
-const parser = require("@babel/parser");
 const fs = require("fs");
+const path = require("path");
+const parser = require("@babel/parser");
+const {default: traverse} = require("@babel/traverse");
+const t = require("@babel/types");
+const {looksLike, isModuleExports} = require("./looks-like");
+
 
 const proxifyFnName = "_will_mutate_check_proxify";
-const proxyCode = fs.readFileSync(`${__dirname}/proxy.js`, "utf8");
+// eslint-disable-next-line node/no-sync
+const proxyCode = fs.readFileSync(path.join(__dirname, "proxy.js"), "utf8");
 const proxyAST = parser.parse(proxyCode);
 const proxyBodyAST = proxyAST.program.body.filter(node => !isModuleExports(node));
 
