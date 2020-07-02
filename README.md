@@ -1,11 +1,13 @@
 <div align="center">
 
+<img alt="Will Mutate icon" width="128" height="128" align="center" src=".github/icon.png"/>
+
 # Will Mutate
 
 **Runtime test to that detects mutations to objects**
 
 [![npm version](https://badgen.net/npm/v/will-mutate?icon=npm)](https://www.npmjs.com/package/will-mutate)
-[![check status](https://badgen.net/github/checks/evelynhathaway/will-mutate/master?icon=github)](https://github.com/evelynhathaway/will-mutate/actions)
+[![check status](https://badgen.net/github/checks/ceoss/will-mutate/master?icon=github)](https://github.com/ceoss/will-mutate/actions)
 [![license: MIT](https://badgen.net/badge/license/MIT/blue)](/LICENSE)
 
 </div>

@@ -1,21 +1,27 @@
 {
 	"name": "will-mutate",
 	"version": "0.1.0",
-	"description": "",
-	"main": "index.js",
-	"homepage": "https://github.com/evelynhathaway/will-mutate#readme",
+	"description": "Runtime test to that detects mutations to objects",
+	"keywords": [
+		"babel-plugin",
+		"mutation",
+		"testing",
+		"proxy"
+	],
+	"homepage": "https://github.com/ceoss/will-mutate#readme",
 	"bugs": {
-		"url": "https://github.com/evelynhathaway/will-mutate/issues"
+		"url": "https://github.com/ceoss/will-mutate/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/evelynhathaway/will-mutate.git"
+		"url": "git+https://github.com/ceoss/will-mutate.git"
 	},
 	"license": "MIT",
 	"author": "Evelyn Hathaway <npm@evelyn.dev> (https://evelyn.dev)",
 	"contributors": [
 		"Corbin Crutchley <crutchcorn@gmail.com> (https://crutchcorn.dev)"
 	],
+	"main": "plugin/index.js",
 	"files": [
 		"plugin/",
 		"!**/__tests__/",
@@ -23,12 +29,17 @@
 		"!**/__fixtures__/"
 	],
 	"scripts": {
-		"debug": "node --inspect-brk ./node_modules/@babel/cli/bin/babel.js src --out-dir lib",
 		"build": "babel src --out-dir lib",
+		"debug": "node --inspect-brk ./node_modules/@babel/cli/bin/babel.js src --out-dir lib",
 		"lint": "eslint ./",
 		"test": "jest"
 	},
-	"keywords": [],
+	"dependencies": {
+		"@babel/cli": "^7.10.1",
+		"@babel/parser": "^7.10.2",
+		"@babel/traverse": "^7.10.1",
+		"@babel/types": "^7.10.2"
+	},
 	"devDependencies": {
 		"@babel/cli": "^7.10.1",
 		"@babel/core": "^7.10.2",
@@ -44,12 +55,6 @@
 		"eslint-plugin-unicorn": "^20.1.0",
 		"jest": "^26.0.1",
 		"jest-file-snapshot": "^0.3.8"
-	},
-	"dependencies": {
-		"@babel/cli": "^7.10.1",
-		"@babel/parser": "^7.10.2",
-		"@babel/traverse": "^7.10.1",
-		"@babel/types": "^7.10.2"
 	},
 	"peerDependencies": {
 		"@babel/core": "^7.0.0"
