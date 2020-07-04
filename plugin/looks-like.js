@@ -14,6 +14,7 @@ const looksLike = (a, b) => {
 	);
 };
 
+// eslint-disable-next-line eqeqeq
 const isPrimitive = (val) => val == undefined || /^[bns]/.test(typeof val);
 
 const isModuleExports = node => looksLike(node, {

@@ -18,7 +18,7 @@ describe("Proxy util", () => {
 					prop: "old",
 				},
 				classy: class {
-					constructor() {}
+					constructor () {}
 				},
 			}
 		);
@@ -26,8 +26,8 @@ describe("Proxy util", () => {
 			value: "Don't write to me please",
 		});
 		Object.defineProperty(nakedTarget, "accessor", {
-			set() {},
-			get() {return {};},
+			set () {},
+			get () {return {};},
 		});
 
 		targets.deepProto = proxify(
@@ -58,7 +58,7 @@ describe("Proxy util", () => {
 	/*
 		No-op non-object
 	*/
-	test("to return non-objects untouched", async () => {
+	test("to return non-objects untouched", () => {
 		["Test", Infinity, 0, null, undefined, true].forEach((target) => {
 			expect(proxify(target)).toEqual(target);
 		});
@@ -67,44 +67,44 @@ describe("Proxy util", () => {
 	/*
 		Basic mutation failure
 	*/
-	test("to throw when assigning a prop (always)", async () => {
+	test("to throw when assigning a prop (always)", () => {
 		targets.all.forEach((target) => {
 			expect(() => {
 				target.prop = "New";
 			}).toThrow("Mutation assertion failed. `set` trap triggered on `target.prop`.");
 		});
 	});
-	test("to throw when assigning to a new sub prop (deep)", async () => {
+	test("to throw when assigning to a new sub prop (deep)", () => {
 		expect(() => {
 			targets.deep.obj.new = "New";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `target.obj.new`.");
 	});
-	test("to not throw when assigning to a new sub prop (shallow)", async () => {
+	test("to not throw when assigning to a new sub prop (shallow)", () => {
 		expect(() => {
 			targets.shallow.obj.new = "New";
 		}).not.toThrow();
 	});
-	test("to not throw when assigning to a prop on the prototype (deep, no proto)", async () => {
+	test("to not throw when assigning to a prop on the prototype (deep, no proto)", () => {
 		expect(() => {
 			Object.getPrototypeOf(targets.deep).protoProp = "New";
 		}).not.toThrow();
 	});
-	test("to throw when assigning to a prop on the prototype (deep, proto)", async () => {
+	test("to throw when assigning to a prop on the prototype (deep, proto)", () => {
 		expect(() => {
 			Object.getPrototypeOf(targets.deepProto).protoProp = "New";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `target.__proto__.protoProp`.");
 	});
-	test("to not throw when assigning to a prop on the prototype (shallow, proto)", async () => {
+	test("to not throw when assigning to a prop on the prototype (shallow, proto)", () => {
 		expect(() => {
 			Object.getPrototypeOf(targets.proto).protoProp = "New";
 		}).not.toThrow();
 	});
-	test("to throw when assigning to a sub prop on the prototype (deep, proto)", async () => {
+	test("to throw when assigning to a sub prop on the prototype (deep, proto)", () => {
 		expect(() => {
 			Object.getPrototypeOf(targets.deepProto).protoObj.protoProp = "New";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `target.__proto__.protoObj.protoProp`.");
 	});
-	test("to not throw when assigning to a sub prop on the prototype (shallow, proto)", async () => {
+	test("to not throw when assigning to a sub prop on the prototype (shallow, proto)", () => {
 		expect(() => {
 			Object.getPrototypeOf(targets.proto).protoObj.protoProp = "New";
 		}).not.toThrow();
@@ -113,11 +113,14 @@ describe("Proxy util", () => {
 	/*
 		Assert that the dummy target and getting is working okie dokie
 	*/
-	test("to not throw when accessing read-only props multiple times (always)", async () => {
+	test("to not throw when accessing read-only props multiple times (always)", () => {
 		targets.all.forEach((target) => {
 			expect(() => {
+				/* eslint-disable no-unused-expressions */
+				// Side-effects-only
 				target.readOnly;
 				target.readOnly;
+				/* eslint-enable no-unused-expressions */
 				Object.getOwnPropertyDescriptor(target, "readOnly");
 				Object.getOwnPropertyDescriptor(target, "readOnly");
 				Object.getOwnPropertyDescriptor(target, "accessor");
@@ -131,7 +134,7 @@ describe("Proxy util", () => {
 	/*
 		Assert that the `internalPath` clears when caught
 	*/
-	test("to throw throw the same error when caught and retried", async () => {
+	test("to throw throw the same error when caught and retried", () => {
 		expect(() => {
 			targets.deep.obj.prop = "New";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `target.obj.prop`.");
@@ -146,26 +149,26 @@ describe("Proxy util", () => {
 	/*
 		Less common target objects
 	*/
-	test("to work with other proxies as the target", async () => {
+	test("to work with other proxies as the target", () => {
 		const proxyProxy = proxify(new Proxy({test: "test"}, {}), {deep: true});
 		expect(proxyProxy.test).toEqual("test");
 		expect(() => {
 			proxyProxy.test = "new";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `target.test`.");
 	});
-	test("to work with functions as the target", async () => {
+	test("to work with functions as the target", () => {
 		const proxyFunc = proxify(function funcName () {return "funcName";}, {deep: true});
 		expect(proxyFunc()).toEqual("funcName");
 		expect(() => {
 			proxyFunc.test = "new";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `funcName.test`.");
 	});
-	test("to work with classes as the target", async () => {
+	test("to work with classes as the target", () => {
 		const TestClass = class {
-			instanceBoi() {
+			instanceBoi () {
 				return "instanceBoi";
 			}
-			static staticBoi() {
+			static staticBoi () {
 				return "staticBoi";
 			}
 		};
@@ -176,7 +179,7 @@ describe("Proxy util", () => {
 			proxyClass.staticBoi.test = "new";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `TestClass.staticBoi.test`.");
 	});
-	test("to work with arrays as the target", async () => {
+	test("to work with arrays as the target", () => {
 		const array = ["test", {}];
 		array["other prop with #$#@*$("] = "I found out I was one line away from 100% code cov and this is fun";
 		const proxyArray = proxify(array, {deep: true});
@@ -190,37 +193,37 @@ describe("Proxy util", () => {
 	/*
 		getOwnPropertyDescriptor edge cases
 	*/
-	test("to throw when using a setter via getOwnPropertyDescriptor (deep)", async () => {
+	test("to throw when using a setter via getOwnPropertyDescriptor (deep)", () => {
 		expect(() => {
 			Object.getOwnPropertyDescriptor(targets.deep, "accessor").set("new");
 		}).toThrow("Mutation assertion failed. `apply` trap triggered on `target.accessor.descriptor.set()`.");
 	});
-	test("to throw when using a setter via getOwnPropertyDescriptor (shallow)", async () => {
+	test("to throw when using a setter via getOwnPropertyDescriptor (shallow)", () => {
 		expect(() => {
 			Object.getOwnPropertyDescriptor(targets.shallow, "accessor").set("new");
 		}).toThrow("Mutation assertion failed. `apply` trap triggered on `target.accessor.descriptor.set()`.");
 	});
-	test("to throw when setting after using a getter via getOwnPropertyDescriptor (deep)", async () => {
+	test("to throw when setting after using a getter via getOwnPropertyDescriptor (deep)", () => {
 		expect(() => {
 			Object.getOwnPropertyDescriptor(targets.deep, "accessor").get().prop = "new";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `target.accessor.descriptor.get().prop`.");
 	});
-	test("to throw when setting a new prop on an accessor via getOwnPropertyDescriptor (deep)", async () => {
+	test("to throw when setting a new prop on an accessor via getOwnPropertyDescriptor (deep)", () => {
 		expect(() => {
 			Object.getOwnPropertyDescriptor(targets.deep, "accessor").set.prop = "new";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `target.accessor.descriptor.set.prop`.");
 	});
-	test("to not throw when setting a new prop on an accessor via getOwnPropertyDescriptor (shallow)", async () => {
+	test("to not throw when setting a new prop on an accessor via getOwnPropertyDescriptor (shallow)", () => {
 		expect(() => {
 			Object.getOwnPropertyDescriptor(targets.shallow, "accessor").set.prop = "new";
 		}).not.toThrow();
 	});
-	test("to throw when setting a new prop on a value found via getOwnPropertyDescriptor (deep)", async () => {
+	test("to throw when setting a new prop on a value found via getOwnPropertyDescriptor (deep)", () => {
 		expect(() => {
 			Object.getOwnPropertyDescriptor(targets.deep, "obj").value.newProp = "new";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `target.obj.descriptor.value.newProp`.");
 	});
-	test("to not throw when setting a new prop on a value found via getOwnPropertyDescriptor (shallow)", async () => {
+	test("to not throw when setting a new prop on a value found via getOwnPropertyDescriptor (shallow)", () => {
 		expect(() => {
 			Object.getOwnPropertyDescriptor(targets.shallow, "obj").value.newProp = "new";
 		}).not.toThrow();
@@ -229,22 +232,22 @@ describe("Proxy util", () => {
 	/*
 		Define property
 	*/
-	test("to throw when defining a root property (deep)", async () => {
+	test("to throw when defining a root property (deep)", () => {
 		expect(() => {
 			Object.defineProperty(targets.deep, "prop", {value: "new"});
 		}).toThrow("Mutation assertion failed. `defineProperty` trap triggered on `target.prop`.");
 	});
-	test("to throw when defining a root property (shallow)", async () => {
+	test("to throw when defining a root property (shallow)", () => {
 		expect(() => {
 			Object.defineProperty(targets.shallow, "prop", {value: "new"});
 		}).toThrow("Mutation assertion failed. `defineProperty` trap triggered on `target.prop`.");
 	});
-	test("to throw when defining a sub property (deep)", async () => {
+	test("to throw when defining a sub property (deep)", () => {
 		expect(() => {
 			Object.defineProperty(targets.deep.obj, "prop", {value: "new"});
 		}).toThrow("Mutation assertion failed. `defineProperty` trap triggered on `target.obj.prop`.");
 	});
-	test("to throw when defining a sub property (shallow)", async () => {
+	test("to throw when defining a sub property (shallow)", () => {
 		expect(() => {
 			Object.defineProperty(targets.shallow.obj, "prop", {value: "new"});
 		}).not.toThrow();
@@ -253,22 +256,22 @@ describe("Proxy util", () => {
 	/*
 		Delete
 	*/
-	test("to throw when deleting a root property", async () => {
+	test("to throw when deleting a root property", () => {
 		expect(() => {
 			delete targets.deep.prop;
 		}).toThrow("Mutation assertion failed. `deleteProperty` trap triggered on `target.prop`.");
 	});
-	test("to throw when deleting a root property (shallow)", async () => {
+	test("to throw when deleting a root property (shallow)", () => {
 		expect(() => {
 			delete targets.shallow.prop;
 		}).toThrow("Mutation assertion failed. `deleteProperty` trap triggered on `target.prop`.");
 	});
-	test("to throw when deleting a sub property", async () => {
+	test("to throw when deleting a sub property", () => {
 		expect(() => {
 			delete targets.deep.obj.prop;
 		}).toThrow("Mutation assertion failed. `deleteProperty` trap triggered on `target.obj.prop`.");
 	});
-	test("to not throw when deleting a sub property (shallow)", async () => {
+	test("to not throw when deleting a sub property (shallow)", () => {
 		expect(() => {
 			delete targets.shallow.obj.prop;
 		}).not.toThrow();
@@ -277,22 +280,22 @@ describe("Proxy util", () => {
 	/*
 		Accessors
 	*/
-	test("to throw when setting an accessor property", async () => {
+	test("to throw when setting an accessor property", () => {
 		expect(() => {
 			targets.deep.accessor = "new";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `target.accessor`.");
 	});
-	test("to throw when setting an accessor property (shallow)", async () => {
+	test("to throw when setting an accessor property (shallow)", () => {
 		expect(() => {
 			targets.shallow.accessor = "new";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `target.accessor`.");
 	});
-	test("to throw when setting an accessor's sub property", async () => {
+	test("to throw when setting an accessor's sub property", () => {
 		expect(() => {
 			targets.deep.accessor.newProp = "new";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `target.accessor.newProp`.");
 	});
-	test("to not throw when setting an accessor's sub property (shallow)", async () => {
+	test("to not throw when setting an accessor's sub property (shallow)", () => {
 		expect(() => {
 			targets.shallow.accessor.newProp = "new";
 		}).not.toThrow();
@@ -301,22 +304,22 @@ describe("Proxy util", () => {
 	/*
 		Prevent Extensions
 	*/
-	test("to throw when preventing extensions on the target (deep)", async () => {
+	test("to throw when preventing extensions on the target (deep)", () => {
 		expect(() => {
 			Object.preventExtensions(targets.deep);
 		}).toThrow("Mutation assertion failed. `preventExtensions` trap triggered on `target`.");
 	});
-	test("to throw when preventing extensions on the target (shallow)", async () => {
+	test("to throw when preventing extensions on the target (shallow)", () => {
 		expect(() => {
 			Object.preventExtensions(targets.shallow);
 		}).toThrow("Mutation assertion failed. `preventExtensions` trap triggered on `target`.");
 	});
-	test("to throw when preventing extensions on a property (deep)", async () => {
+	test("to throw when preventing extensions on a property (deep)", () => {
 		expect(() => {
 			Object.preventExtensions(targets.deep.obj);
 		}).toThrow("Mutation assertion failed. `preventExtensions` trap triggered on `target.obj`.");
 	});
-	test("to not throw when preventing extensions on a property (shallow)", async () => {
+	test("to not throw when preventing extensions on a property (shallow)", () => {
 		expect(() => {
 			Object.preventExtensions(targets.shallow.obj);
 		}).not.toThrow();
@@ -325,22 +328,22 @@ describe("Proxy util", () => {
 	/*
 		Set prototype
 	*/
-	test("to throw when setting a new prototype on a property (deep, proto)", async () => {
+	test("to throw when setting a new prototype on a property (deep, proto)", () => {
 		expect(() => {
 			Object.setPrototypeOf(targets.deepProto.obj, {"I'm a bad boy": () => {}});
 		}).toThrow("Mutation assertion failed. `setPrototypeOf` trap triggered on `target.obj.__proto__`.");
 	});
-	test("to not throw when setting a new prototype on a property (deep, not proto)", async () => {
+	test("to not throw when setting a new prototype on a property (deep, not proto)", () => {
 		expect(() => {
 			Object.setPrototypeOf(targets.deep.obj, {"I'm a bad boy": () => {}});
 		}).not.toThrow();
 	});
-	test("to throw when setting a new prototype on the target (shallow, proto)", async () => {
+	test("to throw when setting a new prototype on the target (shallow, proto)", () => {
 		expect(() => {
 			Object.setPrototypeOf(targets.proto, {"I'm a bad boy": () => {}});
 		}).toThrow("Mutation assertion failed. `setPrototypeOf` trap triggered on `target.__proto__`.");
 	});
-	test("to not throw when setting a new prototype on the target (deep, not proto)", async () => {
+	test("to not throw when setting a new prototype on the target (deep, not proto)", () => {
 		expect(() => {
 			Object.setPrototypeOf(targets.deep, {"I'm a bad boy": () => {}});
 		}).not.toThrow();

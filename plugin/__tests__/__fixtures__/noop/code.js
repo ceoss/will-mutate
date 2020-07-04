@@ -4,7 +4,7 @@ const foo = (foo) => {
 	foo.prop = "pie";
 };
 
-function bar(foo) {
+function bar (foo) {
 	foo.prop = "Test";
 }
 

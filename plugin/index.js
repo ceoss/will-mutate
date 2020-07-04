@@ -41,10 +41,10 @@ module.exports = () => {
              * the Proxy handler or not.
              */
 			Program: {
-				enter(programPath) {
+				enter (programPath) {
 					traverse(programPath.node, {
 						noScope: true,
-						enter(decoratorPath) {
+						enter (decoratorPath) {
 							/**
                              * Look for all $shouldNotMutate functions
                              */
@@ -84,10 +84,9 @@ module.exports = () => {
 								// Traverse the path to get the "BlockStatement" so we can mutate the code on it's own
 								traverse(functionNodePath.node, {
 									noScope: true,
-									enter(blockStatementPath) {
+									enter (blockStatementPath) {
 										// This is the "body" of the function we're trying to mock data out of
 										if (blockStatementPath.node.type === "BlockStatement") {
-
 											const mockCodeArr = inBodyArgsToProxy.map(varNameToChange => getVariableMockCodeAST(varNameToChange));
 
 											// Flat map since the `codeAST` is itself an array
@@ -99,7 +98,7 @@ module.exports = () => {
 
 											traverse(blockStatementPath.node, {
 												noScope: true,
-												enter(identifierPath) {
+												enter (identifierPath) {
 													if (
 														identifierPath.node.type === "Identifier"
 													) {
@@ -119,7 +118,7 @@ module.exports = () => {
 						},
 					});
 				},
-				exit(programPath) {
+				exit (programPath) {
 					const val = Programs.get(programPath.node);
 					/**
                      * If the Program has any utilization of the $shouldNotMutate, then we'll inject the code from the

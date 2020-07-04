@@ -7,7 +7,7 @@ const foo = (foo, other) => {
 };
 
 $shouldNotMutate(["foo"]);
-function bar(foo, other) {
+function bar (foo, other) {
 	foo.prop = "Test";
 	other.prop = "Don't change me";
 }
