@@ -38,8 +38,11 @@
 	"husky": {
 		"hooks": {
 			"pre-commit": "lint-staged",
-			"commit-msg": "commitlint -x ./node_modules/conventional-changelog-evelyn/commitlint.config.js -E HUSKY_GIT_PARAMS"
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
 		}
+	},
+	"commitlint": {
+		"extends": "./node_modules/conventional-changelog-evelyn/commitlint.config.js"
 	},
 	"lint-staged": {
 		"**/package.json": "sort-package-json",
