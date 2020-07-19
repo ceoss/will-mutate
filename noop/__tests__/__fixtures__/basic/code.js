@@ -12,9 +12,6 @@ function bar (foo, other) {
 	other.prop = "Don't change me";
 }
 
-/**
- * This does not currently work
- */
 $shouldNotMutate(["foo"]);
 const pizza = foo => JSON.parse("{}");
 

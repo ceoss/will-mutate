@@ -6,10 +6,6 @@ module.exports = () => {
 	return {
 		name: "willMutate",
 		visitor: {
-			/**
-             * We need to traverse the "Program" so we can know if we need to inject
-             * the Proxy handler or not.
-             */
 			Program: {
 				enter (programPath) {
 					traverse(programPath.node, {
