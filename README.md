@@ -75,6 +75,25 @@ module.exports = {
 };
 ```
 
+## Caveats
+
+Arrow functions with the concise body syntax do not currently work with Will Mutate.
+
+```js
+// Doesn't work
+$shouldNotMutate(["foo"]);
+const pizza = foo => JSON.parse("{}");
+
+// Works
+$shouldNotMutate(["foo"]);
+const pizza = foo => {return JSON.parse("{}");};
+```
+
+## Alternatives
+
+- TypeScript or Flow typings
+- [mutation-sentinel](https://github.com/flexport/mutation-sentinel)
+
 ## License
 
 Copyright Evelyn Hathaway and Corbin Crutchley, [MIT License](/LICENSE)
