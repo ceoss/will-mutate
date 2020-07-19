@@ -1,6 +1,6 @@
 {
 	"name": "will-mutate",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"description": "Runtime test to that detects mutations to objects",
 	"keywords": [
 		"babel-plugin",
