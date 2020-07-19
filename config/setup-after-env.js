@@ -1,4 +1,4 @@
-import {toMatchFile} from "jest-file-snapshot";
+const {toMatchFile} = require("jest-file-snapshot");
 
 
 expect.extend({toMatchFile});

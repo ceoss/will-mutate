@@ -25,17 +25,33 @@
 	"files": [
 		"plugin/",
 		"utils/",
-		"noop",
+		"noop/",
 		"!**/__tests__/",
 		"!**/__mocks__/",
 		"!**/__fixtures__/"
 	],
 	"scripts": {
-		"build": "babel src --out-dir lib",
-		"debug": "node --inspect-brk ./node_modules/@babel/cli/bin/babel.js src --out-dir lib",
-		"lint": "eslint ./",
 		"format": "eslint --fix ./",
+		"lint": "eslint ./",
 		"test": "jest"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged",
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+		}
+	},
+	"commitlint": {
+		"extends": "./node_modules/conventional-changelog-evelyn/commitlint.config.js"
+	},
+	"lint-staged": {
+		"**/package.json": "sort-package-json",
+		"./": "eslint --fix"
+	},
+	"config": {
+		"commitizen": {
+			"path": "@commitlint/prompt"
+		}
 	},
 	"dependencies": {
 		"@babel/cli": "^7.10.5",
@@ -46,9 +62,13 @@
 	"devDependencies": {
 		"@babel/cli": "^7.10.5",
 		"@babel/core": "^7.10.5",
-		"@babel/preset-env": "^7.10.4",
+		"@commitlint/prompt": "^9.1.1",
+		"@semantic-release/changelog": "^5.0.1",
+		"@semantic-release/git": "^9.0.0",
 		"babel-plugin-tester": "^9.2.0",
 		"babel-test": "^0.2.3",
+		"commitlint": "^9.1.0",
+		"conventional-changelog-evelyn": "^1.2.0",
 		"eslint": "^7.5.0",
 		"eslint-plugin-evelyn": "^3.1.0",
 		"eslint-plugin-import": "^2.22.0",
@@ -56,13 +76,20 @@
 		"eslint-plugin-mocha": "^7.0.1",
 		"eslint-plugin-node": "^11.1.0",
 		"eslint-plugin-unicorn": "^21.0.0",
+		"husky": "^4.2.5",
 		"jest": "^26.1.0",
-		"jest-file-snapshot": "^0.3.8"
+		"jest-file-snapshot": "^0.3.8",
+		"lint-staged": "^10.2.11",
+		"semantic-release": "^17.1.1",
+		"sort-package-json": "^1.44.0"
 	},
 	"peerDependencies": {
 		"@babel/core": "^7.0.0"
 	},
 	"engines": {
 		"node": ">=10.0.0"
+	},
+	"release": {
+		"extends": "conventional-changelog-evelyn/release.config.js"
 	}
 }
