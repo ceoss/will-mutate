@@ -3,7 +3,7 @@ const path = require("path");
 const parser = require("@babel/parser");
 const {default: traverse} = require("@babel/traverse");
 const t = require("@babel/types");
-const {looksLike, isModuleExports} = require("./looks-like");
+const {looksLike, isModuleExports} = require("../utils/looks-like");
 
 
 const proxifyFnName = "_will_mutate_check_proxify";

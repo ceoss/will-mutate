@@ -6,4 +6,4 @@ const {fixtures} = create({
 	plugins: [require.resolve("..")],
 });
 
-fixtures("will-mutate plugin", path.join(__dirname, "__fixtures__"));
+fixtures("noop plugin", path.join(__dirname, "__fixtures__"));
