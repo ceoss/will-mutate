@@ -24,6 +24,8 @@
 	"main": "plugin/index.js",
 	"files": [
 		"plugin/",
+		"utils/",
+		"noop",
 		"!**/__tests__/",
 		"!**/__mocks__/",
 		"!**/__fixtures__/"
@@ -32,6 +34,7 @@
 		"build": "babel src --out-dir lib",
 		"debug": "node --inspect-brk ./node_modules/@babel/cli/bin/babel.js src --out-dir lib",
 		"lint": "eslint ./",
+		"format": "eslint --fix ./",
 		"test": "jest"
 	},
 	"dependencies": {
