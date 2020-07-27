@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.1.0
+
+**[`v1.0.0...v1.1.0`](https://github.com/ceoss/will-mutate/compare/v1.0.0...v1.1.0)** - **2020-07-27**
+
+
+### ✨ Feature
+
+
+- Support arrow function concise body syntax [`7f13905`](https://github.com/ceoss/will-mutate/commit/7f13905)
+
+### Other
+
+
+- Merge pull request #18 from ceoss/concise-arrows [`0a54ed7`](https://github.com/ceoss/will-mutate/commit/0a54ed7), closes [#18](https://github.com/ceoss/will-mutate/issues/18)
+
 ## v1.0.0
 
 **2020-07-19**
