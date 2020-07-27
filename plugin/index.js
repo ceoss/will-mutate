@@ -84,9 +84,16 @@ module.exports = () => {
 								// Traverse the path to get the "BlockStatement" so we can mutate the code on it's own
 								traverse(functionNodePath.node, {
 									noScope: true,
-									enter (blockStatementPath) {
-										// This is the "body" of the function we're trying to mock data out of
-										if (blockStatementPath.node.type === "BlockStatement") {
+									enter (innerPath) {
+										// This converts `() => true` to `() => {return true;}`
+										const body = innerPath.get("body");
+										if (innerPath.node.type === "ArrowFunctionExpression" && body.type !== "BlockStatement") {
+											innerPath.node.body = t.BlockStatement([
+												t.ReturnStatement(innerPath.node.body),
+											]);
+										}
+										// This is the "body" block of the function we're trying to mock data out of
+										if (innerPath.node.type === "BlockStatement") {
 											const mockCodeArr = inBodyArgsToProxy.map(varNameToChange => getVariableMockCodeAST(varNameToChange));
 
 											// Flat map since the `codeAST` is itself an array
@@ -94,9 +101,9 @@ module.exports = () => {
 												.map((val) => val.codeAST)
 												.reduce((a, b) => a.concat(b), []);
 
-											blockStatementPath.node.body = [...codeASTToAppend, ...blockStatementPath.node.body];
+											innerPath.node.body = [...codeASTToAppend, ...innerPath.node.body];
 
-											traverse(blockStatementPath.node, {
+											traverse(innerPath.node, {
 												noScope: true,
 												enter (identifierPath) {
 													if (

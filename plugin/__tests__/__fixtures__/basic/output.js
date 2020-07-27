@@ -201,12 +201,12 @@ function bar(foo, other) {
   _will_mutate_check_foo.prop = "Test";
   other.prop = "Don't change me";
 }
-/**
- * This does not currently work
- */
 
+const pizza = foo => {
+  const _will_mutate_check_foo = _will_mutate_check_proxify(foo);
 
-const pizza = foo => JSON.parse("{}");
+  return JSON.parse("{}");
+};
 
 foo(globalVariable);
 bar(globalVariable);
