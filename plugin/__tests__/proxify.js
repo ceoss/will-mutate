@@ -1,7 +1,7 @@
-const proxify = require("../proxy");
+const proxify = require("../proxify");
 
 
-describe("Proxy util", () => {
+describe("Proxify util", () => {
 	const targets = {};
 	let nakedTarget;
 	beforeEach(() => {
@@ -14,6 +14,7 @@ describe("Proxy util", () => {
 			}),
 			{
 				prop: "old",
+				array: ["old"],
 				obj: {
 					prop: "old",
 				},
@@ -108,6 +109,70 @@ describe("Proxy util", () => {
 		expect(() => {
 			Object.getPrototypeOf(targets.proto).protoObj.protoProp = "New";
 		}).not.toThrow();
+	});
+
+	/*
+		Native method mutations
+	*/
+	test("to throw when pushing to an array target (shallow)", () => {
+		expect(() => {
+			proxify(["old"]).push("New");
+		}).toThrow("Mutation assertion failed. `set` trap triggered on `target[1]`.");
+	});
+	test("to throw when pushing to an array prop (deep)", () => {
+		expect(() => {
+			targets.deep.array.push("New");
+		}).toThrow("Mutation assertion failed. `set` trap triggered on `target.array[1]`.");
+	});
+	test("to throw when popping an array target (shallow)", () => {
+		expect(() => {
+			proxify(["old"]).pop();
+		}).toThrow("Mutation assertion failed. `deleteProperty` trap triggered on `target[0]`.");
+	});
+	// EDGECASE - This error isn't the clearest
+	test("to throw when unshifting an array target (shallow)", () => {
+		expect(() => {
+			proxify(["old"]).unshift();
+		}).toThrow(
+			// Testing edgcases is fun, I had no idea the native code mutated `.length` first
+			// That's in my top ten useless things to know for a job interview 🤔😹
+			"Mutation assertion failed. `set` trap triggered on `target.length`."
+		);
+	});
+	test("to throw when shifting an array target (shallow)", () => {
+		expect(() => {
+			proxify(["old"]).shift();
+		}).toThrow("Mutation assertion failed. `deleteProperty` trap triggered on `target[0]`.");
+	});
+	test("to throw when reversing an array target (shallow)", () => {
+		expect(() => {
+			proxify([1, 2, 3]).reverse();
+		}).toThrow("Mutation assertion failed. `set` trap triggered on `target[0]`.");
+	});
+	test("to throw when sorting an array target (shallow)", () => {
+		expect(() => {
+			proxify([1, 3, 2]).sort();
+		}).toThrow("Mutation assertion failed. `set` trap triggered on `target[0]`.");
+	});
+	test("to throw when splicing an array target (shallow)", () => {
+		expect(() => {
+			proxify([1, "Bye-bye!", 2, 3]).splice(1, 1);
+		}).toThrow("Mutation assertion failed. `set` trap triggered on `target[1]`.");
+	});
+	test("to throw when copying within an array target (shallow)", () => {
+		expect(() => {
+			proxify([1, 2, 3]).copyWithin([1, 2, 3], 1, 2);
+		}).toThrow("Mutation assertion failed. `set` trap triggered on `target[0]`.");
+	});
+	test("to throw when filling an array target (shallow)", () => {
+		expect(() => {
+			proxify(new Array(10)).fill("Filler? I hardly know her.", 2);
+		}).toThrow("Mutation assertion failed. `set` trap triggered on `target[2]`.");
+	});
+	test("to throw when using Object.assign (shallow)", () => {
+		expect(() => {
+			Object.assign(targets.shallow, {newProp: "New"});
+		}).toThrow("Mutation assertion failed. `set` trap triggered on `target.newProp`.");
 	});
 
 	/*

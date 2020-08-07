@@ -8,7 +8,7 @@ const {looksLike, isModuleExports} = require("../utils/looks-like");
 
 const proxifyFnName = "_will_mutate_check_proxify";
 // eslint-disable-next-line node/no-sync
-const proxyCode = fs.readFileSync(path.join(__dirname, "proxy.js"), "utf8");
+const proxyCode = fs.readFileSync(path.join(__dirname, "proxify.js"), "utf8");
 const proxyAST = parser.parse(proxyCode);
 const proxyBodyAST = proxyAST.program.body.filter(node => !isModuleExports(node));
 
