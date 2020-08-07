@@ -152,7 +152,7 @@ describe("Proxify util", () => {
 	test("to throw when sorting an array target (shallow)", () => {
 		expect(() => {
 			proxify([1, 3, 2]).sort();
-		}).toThrow("Mutation assertion failed. `set` trap triggered on `target[0]`.");
+		}).toThrow(/Mutation assertion failed\. `set` trap triggered on `target\[\d]`\./);
 	});
 	test("to throw when splicing an array target (shallow)", () => {
 		expect(() => {
