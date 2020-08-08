@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.2.0
+
+**[`v1.1.0...v1.2.0`](https://github.com/ceoss/will-mutate/compare/v1.1.0...v1.2.0)** - **2020-08-08**
+
+
+### ✨ Feature
+
+
+- Export proxify, TypeScript types, more tests [`d48c5d7`](https://github.com/ceoss/will-mutate/commit/d48c5d7)
+
+### Other
+
+
+- Looser test for sorting a proxyified array [`dd84fd6`](https://github.com/ceoss/will-mutate/commit/dd84fd6)
+- Merge pull request #19 from ceoss/export-proxify [`0e35ff4`](https://github.com/ceoss/will-mutate/commit/0e35ff4), closes [#19](https://github.com/ceoss/will-mutate/issues/19)
+
 ## v1.1.0
 
 **[`v1.0.0...v1.1.0`](https://github.com/ceoss/will-mutate/compare/v1.0.0...v1.1.0)** - **2020-07-27**
