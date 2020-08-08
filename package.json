@@ -24,6 +24,7 @@
 	"main": "plugin/index.js",
 	"files": [
 		"plugin/",
+		"proxify/",
 		"utils/",
 		"noop/",
 		"!**/__tests__/",
