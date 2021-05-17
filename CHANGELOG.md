@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.2.1
+
+**[`v1.2.0...v1.2.1`](https://github.com/ceoss/will-mutate/compare/v1.2.0...v1.2.1)** - **2021-05-17**
+
+### 📦 Package
+
+- **npm:** Update npm dependencies and GitHub Actions [`1d6f61c`](https://github.com/ceoss/will-mutate/commit/1d6f61c)
+
+### Other
+
+- Fix lint [`2869c67`](https://github.com/ceoss/will-mutate/commit/2869c67)
+- **deps:** Bump y18n from 3.2.1 to 3.2.2 [`9ed21e2`](https://github.com/ceoss/will-mutate/commit/9ed21e2)
+
 ## v1.2.0
 
 **[`v1.1.0...v1.2.0`](https://github.com/ceoss/will-mutate/compare/v1.1.0...v1.2.0)** - **2020-08-08**
