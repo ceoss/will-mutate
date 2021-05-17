@@ -7,7 +7,7 @@
 **Runtime test to that detects mutations to objects**
 
 [![npm version](https://badgen.net/npm/v/will-mutate?icon=npm)](https://www.npmjs.com/package/will-mutate)
-[![check status](https://badgen.net/github/checks/ceoss/will-mutate/master?icon=github)](https://github.com/ceoss/will-mutate/actions)
+[![check status](https://badgen.net/github/checks/ceoss/will-mutate/main?icon=github)](https://github.com/ceoss/will-mutate/actions)
 [![license: MIT](https://badgen.net/badge/license/MIT/blue)](/LICENSE)
 
 </div>
