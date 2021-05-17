@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.2.2
+
+**[`v1.2.1...v1.2.2`](https://github.com/ceoss/will-mutate/compare/v1.2.1...v1.2.2)** - **2021-05-17**
+
+### 📄 Documentation
+
+- **readme:** Update badges [`b1a47cb`](https://github.com/ceoss/will-mutate/commit/b1a47cb)
+
+### Other
+
+- Markdown linter file [`8265bac`](https://github.com/ceoss/will-mutate/commit/8265bac)
+
 ## v1.2.1
 
 **[`v1.2.0...v1.2.1`](https://github.com/ceoss/will-mutate/compare/v1.2.0...v1.2.1)** - **2021-05-17**
