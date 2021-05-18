@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.2.3
+
+**[`v1.2.2...v1.2.3`](https://github.com/ceoss/will-mutate/compare/v1.2.2...v1.2.3)** - **2021-05-18**
+
+### 📦 Package
+
+- **npm:** Bump @babel/cli from 7.13.16 to 7.14.3 [`eeb7000`](https://github.com/ceoss/will-mutate/commit/eeb7000)
+- **npm:** Bump @babel/core from 7.14.2 to 7.14.3 [`35e2dae`](https://github.com/ceoss/will-mutate/commit/35e2dae)
+- **npm:** Bump @babel/parser from 7.14.2 to 7.14.3 [`a160ffb`](https://github.com/ceoss/will-mutate/commit/a160ffb)
+- **npm:** Bump conventional-changelog-evelyn from 1.2.2 to 1.2.3 [`5da0171`](https://github.com/ceoss/will-mutate/commit/5da0171)
+
 ## v1.2.2
 
 **[`v1.2.1...v1.2.2`](https://github.com/ceoss/will-mutate/compare/v1.2.1...v1.2.2)** - **2021-05-17**
