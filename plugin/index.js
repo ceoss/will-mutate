@@ -97,6 +97,8 @@ module.exports = () => {
 											const mockCodeArr = inBodyArgsToProxy.map(varNameToChange => getVariableMockCodeAST(varNameToChange));
 
 											// Flat map since the `codeAST` is itself an array
+											// Flat map is not yet supported with engines node >= 10
+											// eslint-disable-next-line unicorn/prefer-array-flat
 											const codeASTToAppend = mockCodeArr
 												.map((val) => val.codeAST)
 												.reduce((a, b) => a.concat(b), []);

@@ -60,6 +60,7 @@ describe("Proxify util", () => {
 		No-op non-object
 	*/
 	test("to return non-objects untouched", () => {
+		// eslint-disable-next-line unicorn/prefer-number-properties
 		["Test", Infinity, 0, null, undefined, true].forEach((target) => {
 			expect(proxify(target)).toEqual(target);
 		});

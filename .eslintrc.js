@@ -2,14 +2,21 @@ module.exports = {
 	"globals": {
 		"$shouldNotMutate": "readonly",
 	},
+
 	"plugins": [
 		"evelyn",
 	],
+
 	"extends": [
 		"plugin:evelyn/default",
 		"plugin:evelyn/node",
 		"plugin:evelyn/source",
 	],
+
+	"rules": {
+		"unicorn/prefer-module": "off", // For now
+	},
+
 	"overrides": [
 		{
 			"files": [
@@ -35,6 +42,7 @@ module.exports = {
 			},
 		},
 	],
+
 	"ignorePatterns": [
 		"src/foo.js",
 		"lib/foo.js",

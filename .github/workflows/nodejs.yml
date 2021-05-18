@@ -37,7 +37,6 @@ jobs:
       run: npm test
 
   release:
-    if: github.ref == 'refs/heads/main'
     needs: testing
     runs-on: ubuntu-latest
     env:
