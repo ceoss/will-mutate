@@ -4,18 +4,17 @@ const looksLike = (a, b) => {
 		a &&
 		b &&
 		Object.keys(b).every((bKey) => {
-			const bVal = b[bKey];
-			const aVal = a[bKey];
-			if (typeof bVal === "function") {
-				return bVal(aVal);
+			const bValue = b[bKey];
+			const aValue = a[bKey];
+			if (typeof bValue === "function") {
+				return bValue(aValue);
 			}
-			return isPrimitive(bVal) ? bVal === aVal : looksLike(aVal, bVal);
+			return isPrimitive(bValue) ? bValue === aValue : looksLike(aValue, bValue);
 		})
 	);
 };
 
-// eslint-disable-next-line eqeqeq
-const isPrimitive = (val) => val == undefined || /^[bns]/.test(typeof val);
+const isPrimitive = (value) => value == null || /^[bns]/.test(typeof value);
 
 const isModuleExports = node => looksLike(node, {
 	type: "ExpressionStatement",

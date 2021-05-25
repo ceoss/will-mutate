@@ -1,5 +1,5 @@
 // Create property paths that mostly match the limitations of dot notation
-const propPath = function (path, property) {
+const propertyPath = function (path, property) {
 	if (/^[$A-Z_a-z][\w$]*$/.test(property)) {
 		return `${path}.${property}`;
 	} else if (/^\d$/.test(property)) {
@@ -33,9 +33,9 @@ const _will_mutate_check_proxify = (target, options = {}) => {
 			path = "target";
 		}
 	}
-	if (hasName && !pathIsName) path = propPath(path, name);
+	if (hasName && !pathIsName) path = propertyPath(path, name);
 
-	// Options for resursive function
+	// Options for recursive function
 	const recursiveOptions = {
 		// Extend existing options
 		...options,
@@ -52,7 +52,7 @@ const _will_mutate_check_proxify = (target, options = {}) => {
 
 	// Get traps for deep mutation assertions
 	// Accessor edge case traps
-	handler.getOwnPropertyDescriptor = function (dummyTarget, prop) {
+	handler.getOwnPropertyDescriptor = function (dummyTarget, property) {
 		/*
 			Early return for cached read-only properties, prevents the below invariant when adding read-only properties to the dummy:
 			"The result of Object.getOwnPropertyDescriptor(target) can be applied to the target object using Object.defineProperty() and will not throw an exception."
@@ -78,7 +78,7 @@ const _will_mutate_check_proxify = (target, options = {}) => {
 					{
 						...recursiveOptions,
 						name: false, // Hide name, use custom path logic instead
-						path: `${propPath(path, prop)}.descriptor.value`,
+						path: `${propertyPath(path, property)}.descriptor.value`,
 					}
 				);
 			} else {
@@ -87,7 +87,7 @@ const _will_mutate_check_proxify = (target, options = {}) => {
 					{
 						...recursiveOptions,
 						name: false, // Hide name, use custom path logic instead
-						path: `${propPath(path, prop)}.descriptor.get`,
+						path: `${propertyPath(path, property)}.descriptor.get`,
 						_isGetter: true,
 					}
 				);
@@ -99,7 +99,7 @@ const _will_mutate_check_proxify = (target, options = {}) => {
 				{
 					...recursiveOptions,
 					name: false, // Hide name, use custom path logic instead
-					path: `${propPath(path, prop)}.descriptor.set`,
+					path: `${propertyPath(path, property)}.descriptor.set`,
 					_isSetter: true,
 				}
 			);
@@ -110,24 +110,24 @@ const _will_mutate_check_proxify = (target, options = {}) => {
 			"A property cannot be reported as existent, if it does not exists as an own property of the target object and the target object is not extensible."
 		*/
 		const isReadOnly = descriptor.writable === false || descriptor.configurable === false;
-		if (isReadOnly) Object.defineProperty(dummyTarget, prop, descriptor);
+		if (isReadOnly) Object.defineProperty(dummyTarget, property, descriptor);
 
 		return descriptor;
 	};
 
 	const addGetTrap = (trap) => {
-		handler[trap] = function (dummyTarget, prop) {
+		handler[trap] = function (dummyTarget, property) {
 			// Reflect using the real target, not the dummy
 			const reflectArguments = [...arguments];
 			reflectArguments[0] = target;
 
-			if (trap === "getPrototypeOf") prop = "__proto__";
+			if (trap === "getPrototypeOf") property = "__proto__";
 			if (trap === "apply") {
 				path += "()";
-				prop = false; // Get apply trap doesn't need a prop
+				property = false; // Get apply trap doesn't need a prop
 			}
 			const real = Reflect[trap](...reflectArguments);
-			return deep || _isGetter ? _will_mutate_check_proxify(real, {...recursiveOptions, path, name: prop}) : real; // Will revert to the actual target if not deep
+			return deep || _isGetter ? _will_mutate_check_proxify(real, {...recursiveOptions, path, name: property}) : real; // Will revert to the actual target if not deep
 		};
 	};
 	addGetTrap("get"); // Covered by getOwnPropertyDescriptor, but is more specific
@@ -137,16 +137,16 @@ const _will_mutate_check_proxify = (target, options = {}) => {
 
 	// Mutation traps for erroring
 	const addSetTrap = (trap) => {
-		handler[trap] = function (dummyTarget, prop) {
+		handler[trap] = function (dummyTarget, property) {
 			// Naming properties for mutation tracing in errors
 			// Keep path mutuations inside this scope, the `path` available in the closure will not reset if the exception is caught
 			let internalPath = path;
 			if (trap === "apply") {
 				internalPath += "()";
-				prop = false; // Set apply trap doesn't need a prop
+				property = false; // Set apply trap doesn't need a prop
 			} else if (trap !== "preventExtensions") {
-				if (trap === "setPrototypeOf") prop = "__proto__";
-				internalPath = propPath(internalPath, prop);
+				if (trap === "setPrototypeOf") property = "__proto__";
+				internalPath = propertyPath(internalPath, property);
 			}
 
 			throw new Error(`Mutation assertion failed. \`${trap}\` trap triggered on \`${internalPath}\`.`);

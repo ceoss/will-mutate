@@ -15,7 +15,7 @@ module.exports = () => {
 							 * Look for all $shouldNotMutate functions
 							 */
 							if (decoratorPath.node.type === "ExpressionStatement") {
-								const isFunc = looksLike(decoratorPath, {
+								const isFunction = looksLike(decoratorPath, {
 									node: {
 										type: "ExpressionStatement",
 										expression: {
@@ -26,7 +26,7 @@ module.exports = () => {
 									},
 								});
 
-								if (!isFunc) return;
+								if (!isFunction) return;
 
 								decoratorPath.remove();
 							}

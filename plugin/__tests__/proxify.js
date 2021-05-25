@@ -223,11 +223,11 @@ describe("Proxify util", () => {
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `target.test`.");
 	});
 	test("to work with functions as the target", () => {
-		const proxyFunc = proxify(function funcName () {return "funcName";}, {deep: true});
-		expect(proxyFunc()).toEqual("funcName");
+		const proxyFunction = proxify(function functionName () {return "functionName";}, {deep: true});
+		expect(proxyFunction()).toEqual("functionName");
 		expect(() => {
-			proxyFunc.test = "new";
-		}).toThrow("Mutation assertion failed. `set` trap triggered on `funcName.test`.");
+			proxyFunction.test = "new";
+		}).toThrow("Mutation assertion failed. `set` trap triggered on `functionName.test`.");
 	});
 	test("to work with classes as the target", () => {
 		const TestClass = class {
