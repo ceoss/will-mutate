@@ -6,7 +6,7 @@ const t = require("@babel/types");
 const {looksLike, isModuleExports} = require("../utils/looks-like");
 
 
-const proxifyFnName = "_will_mutate_check_proxify";
+const proxifyFunctionName = "_will_mutate_check_proxify";
 // eslint-disable-next-line node/no-sync
 const proxyCode = fs.readFileSync(path.join(__dirname, "proxify.js"), "utf8");
 const proxyAST = parser.parse(proxyCode);
@@ -21,13 +21,13 @@ const Programs = new WeakMap();
  * @param {string} variableName - The name of the variable to mock out with `proxify`
  */
 const getVariableMockCodeAST = (variableName) => {
-	const newVarName = `_will_mutate_check_${variableName}`;
+	const newVariableName = `_will_mutate_check_${variableName}`;
 	const codeAST = parser.parse(`
-        const ${newVarName} = ${proxifyFnName}(${variableName});
+        const ${newVariableName} = ${proxifyFunctionName}(${variableName});
     `.trim()).program.body;
 	return {
 		codeAST,
-		newVarName,
+		newVarName: newVariableName,
 		oldVarName: variableName,
 	};
 };
@@ -49,7 +49,7 @@ module.exports = () => {
                              * Look for all $shouldNotMutate functions
                              */
 							if (decoratorPath.node.type === "ExpressionStatement") {
-								const isFunc = looksLike(decoratorPath, {
+								const isFunction = looksLike(decoratorPath, {
 									node: {
 										type: "ExpressionStatement",
 										expression: {
@@ -60,14 +60,14 @@ module.exports = () => {
 									},
 								});
 
-								if (!isFunc) return;
+								if (!isFunction) return;
 
-								const notMutateArgs = decoratorPath.node.expression.arguments;
+								const notMutateArguments = decoratorPath.node.expression.arguments;
 
-								let inBodyArgsToProxy = [];
-								if (notMutateArgs.length) {
+								let inBodyArgumentsToProxy = [];
+								if (notMutateArguments.length) {
 									// We expect the first item in the array to be an array of strings
-									inBodyArgsToProxy = notMutateArgs[0].elements.map(node => node.value);
+									inBodyArgumentsToProxy = notMutateArguments[0].elements.map(node => node.value);
 								}
 
 								decoratorPath.remove();
@@ -94,13 +94,13 @@ module.exports = () => {
 										}
 										// This is the "body" block of the function we're trying to mock data out of
 										if (innerPath.node.type === "BlockStatement") {
-											const mockCodeArr = inBodyArgsToProxy.map(varNameToChange => getVariableMockCodeAST(varNameToChange));
+											const mockCodeArray = inBodyArgumentsToProxy.map(variableNameToChange => getVariableMockCodeAST(variableNameToChange));
 
 											// Flat map since the `codeAST` is itself an array
 											// Flat map is not yet supported with engines node >= 10
 											// eslint-disable-next-line unicorn/prefer-array-flat
-											const codeASTToAppend = mockCodeArr
-												.map((val) => val.codeAST)
+											const codeASTToAppend = mockCodeArray
+												.map((value) => value.codeAST)
 												.reduce((a, b) => a.concat(b), []);
 
 											innerPath.node.body = [...codeASTToAppend, ...innerPath.node.body];
@@ -111,12 +111,12 @@ module.exports = () => {
 													if (
 														identifierPath.node.type === "Identifier"
 													) {
-														const val = mockCodeArr.find(val => val.oldVarName === identifierPath.node.name);
+														const value = mockCodeArray.find(value => value.oldVarName === identifierPath.node.name);
 														// If it's not an identifier we need, ignore it
-														if (!val) return;
+														if (!value) return;
 														// If this LOC isn't present, then it will mutate the variable name of the __proxify function
-														if (identifierPath.parent.type === "CallExpression" && identifierPath.parent.callee.name === proxifyFnName) return;
-														identifierPath.replaceWith(t.identifier(val.newVarName));
+														if (identifierPath.parent.type === "CallExpression" && identifierPath.parent.callee.name === proxifyFunctionName) return;
+														identifierPath.replaceWith(t.identifier(value.newVarName));
 													}
 												},
 											});
@@ -128,12 +128,12 @@ module.exports = () => {
 					});
 				},
 				exit (programPath) {
-					const val = Programs.get(programPath.node);
+					const value = Programs.get(programPath.node);
 					/**
                      * If the Program has any utilization of the $shouldNotMutate, then we'll inject the code from the
                      * proxy.js file to then be able to use that function in the AST
                      */
-					if (val) {
+					if (value) {
 						programPath.node.body = [...proxyBodyAST, ...programPath.node.body];
 					}
 				},

@@ -9,13 +9,8 @@ module.exports = {
 
 	"extends": [
 		"plugin:evelyn/default",
-		"plugin:evelyn/node",
-		"plugin:evelyn/source",
+		"plugin:evelyn/typescript",
 	],
-
-	"rules": {
-		"unicorn/prefer-module": "off", // For now
-	},
 
 	"overrides": [
 		{
@@ -27,11 +22,7 @@ module.exports = {
 			],
 			"extends": [
 				"plugin:evelyn/jest",
-				"plugin:evelyn/source",
 			],
-			"rules": {
-				"unicorn/no-null": "off",
-			},
 		},
 		{
 			"files": [
