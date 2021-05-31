@@ -1,5 +1,36 @@
 # Changelog
 
+## v1.2.4
+
+**[`v1.2.3...v1.2.4`](https://github.com/ceoss/will-mutate/compare/v1.2.3...v1.2.4)** - **2021-05-31**
+
+### 📦 Package
+
+- **dev:** Bump @typescript-eslint/eslint-plugin [`242a252`](https://github.com/ceoss/will-mutate/commit/242a252)
+- **dev:** Bump @typescript-eslint/parser from 4.25.0 to 4.26.0 [`175a6cc`](https://github.com/ceoss/will-mutate/commit/175a6cc)
+- **dev:** Bump babel-plugin-tester from 10.0.0 to 10.1.0 [`bb4737a`](https://github.com/ceoss/will-mutate/commit/bb4737a)
+- **dev:** Bump conventional-changelog-evelyn from 1.3.0 to 1.3.1 [`677470e`](https://github.com/ceoss/will-mutate/commit/677470e)
+- **dev:** Bump eslint from 7.26.0 to 7.27.0 [`0794b9f`](https://github.com/ceoss/will-mutate/commit/0794b9f)
+- **dev:** Bump eslint-plugin-evelyn from 5.0.5 to 6.1.0 [`fe61757`](https://github.com/ceoss/will-mutate/commit/fe61757)
+- **dev:** Bump eslint-plugin-evelyn from 6.1.0 to 6.2.0 [`273d187`](https://github.com/ceoss/will-mutate/commit/273d187)
+- **dev:** Bump eslint-plugin-evelyn from 6.2.0 to 6.2.1 [`9dfc952`](https://github.com/ceoss/will-mutate/commit/9dfc952)
+- **dev:** Bump eslint-plugin-import from 2.23.2 to 2.23.3 [`55ce934`](https://github.com/ceoss/will-mutate/commit/55ce934)
+- **dev:** Bump eslint-plugin-import from 2.23.3 to 2.23.4 [`a5f9861`](https://github.com/ceoss/will-mutate/commit/a5f9861)
+- **dev:** Bump eslint-plugin-mocha from 8.1.0 to 8.2.0 [`cb05d81`](https://github.com/ceoss/will-mutate/commit/cb05d81)
+- **dev:** Bump eslint-plugin-mocha from 8.2.0 to 9.0.0 [`20bd1b3`](https://github.com/ceoss/will-mutate/commit/20bd1b3)
+- **dev:** Bump eslint-plugin-regexp from 0.10.0 to 0.11.0 [`3c76fce`](https://github.com/ceoss/will-mutate/commit/3c76fce)
+- **dev:** Bump jest from 26.6.3 to 27.0.1 [`81664b2`](https://github.com/ceoss/will-mutate/commit/81664b2)
+- **dev:** Bump jest from 27.0.1 to 27.0.3 [`4b997d5`](https://github.com/ceoss/will-mutate/commit/4b997d5)
+- **dev:** Bump typescript from 4.2.4 to 4.3.2 [`8d94b47`](https://github.com/ceoss/will-mutate/commit/8d94b47)
+- **dev:** npm update, linting [`b103838`](https://github.com/ceoss/will-mutate/commit/b103838)
+- **prod:** Bump @babel/parser from 7.14.3 to 7.14.4 ([#41](https://github.com/ceoss/will-mutate/issues/41)) [`0b8bfb0`](https://github.com/ceoss/will-mutate/commit/0b8bfb0)
+- **prod:** Bump @babel/types from 7.14.2 to 7.14.4 ([#39](https://github.com/ceoss/will-mutate/issues/39)) [`86f4806`](https://github.com/ceoss/will-mutate/commit/86f4806)
+- npm update, lint [`1778124`](https://github.com/ceoss/will-mutate/commit/1778124)
+
+### 🧹 Internal
+
+- Update dependabot config [`5e95046`](https://github.com/ceoss/will-mutate/commit/5e95046)
+
 ## v1.2.3
 
 **[`v1.2.2...v1.2.3`](https://github.com/ceoss/will-mutate/compare/v1.2.2...v1.2.3)** - **2021-05-18**
