@@ -1,5 +1,37 @@
 # Changelog
 
+## v1.3.0
+
+**[`v1.2.4...v1.3.0`](https://github.com/ceoss/will-mutate/compare/v1.2.4...v1.3.0)** - **2022-07-30**
+
+### ⚡ Improvement
+
+- **npm:** Update npm packages [`818e87c`](https://github.com/ceoss/will-mutate/commit/818e87c)
+
+### 📦 Package
+
+- **dev:** Bump @babel/core from 7.14.3 to 7.14.5 [`92539e4`](https://github.com/ceoss/will-mutate/commit/92539e4)
+- **dev:** Bump @babel/core from 7.14.5 to 7.14.8 [`e020fcb`](https://github.com/ceoss/will-mutate/commit/e020fcb)
+- **dev:** Bump @typescript-eslint/eslint-plugin [`35b8b0f`](https://github.com/ceoss/will-mutate/commit/35b8b0f)
+- **dev:** Bump @typescript-eslint/eslint-plugin [`7463b25`](https://github.com/ceoss/will-mutate/commit/7463b25)
+- **dev:** Bump @typescript-eslint/eslint-plugin [`95d0957`](https://github.com/ceoss/will-mutate/commit/95d0957)
+- **dev:** Bump @typescript-eslint/parser from 4.26.0 to 4.26.1 [`481a678`](https://github.com/ceoss/will-mutate/commit/481a678)
+- **dev:** Bump @typescript-eslint/parser from 4.26.1 to 4.28.4 [`d13080e`](https://github.com/ceoss/will-mutate/commit/d13080e)
+- **dev:** Bump @typescript-eslint/parser from 4.28.4 to 4.28.5 [`3785b71`](https://github.com/ceoss/will-mutate/commit/3785b71)
+- **dev:** Bump eslint from 7.27.0 to 7.28.0 [`669df75`](https://github.com/ceoss/will-mutate/commit/669df75)
+- **dev:** Bump eslint from 7.28.0 to 7.31.0 [`56590fb`](https://github.com/ceoss/will-mutate/commit/56590fb)
+- **dev:** Bump eslint-plugin-jest from 24.3.6 to 24.4.0 [`b2e281f`](https://github.com/ceoss/will-mutate/commit/b2e281f)
+- **dev:** Bump eslint-plugin-regexp from 0.11.0 to 0.13.2 [`02540a3`](https://github.com/ceoss/will-mutate/commit/02540a3)
+- **dev:** Bump jest from 27.0.3 to 27.0.4 [`8cefd71`](https://github.com/ceoss/will-mutate/commit/8cefd71)
+- **dev:** Bump jest from 27.0.4 to 27.0.6 [`a739a1c`](https://github.com/ceoss/will-mutate/commit/a739a1c)
+- **dev:** Bump lint-staged from 11.0.0 to 11.1.1 [`c1fde82`](https://github.com/ceoss/will-mutate/commit/c1fde82)
+- **dev:** Bump semantic-release from 17.4.3 to 17.4.4 [`ba20766`](https://github.com/ceoss/will-mutate/commit/ba20766)
+- **dev:** Bump typescript from 4.3.2 to 4.3.5 [`c79c2b8`](https://github.com/ceoss/will-mutate/commit/c79c2b8)
+
+### 🧹 Internal
+
+- Reduce frequency of dependabot updates [`4e1a43d`](https://github.com/ceoss/will-mutate/commit/4e1a43d)
+
 ## v1.2.4
 
 **[`v1.2.3...v1.2.4`](https://github.com/ceoss/will-mutate/compare/v1.2.3...v1.2.4)** - **2021-05-31**
