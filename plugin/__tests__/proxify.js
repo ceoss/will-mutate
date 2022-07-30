@@ -153,7 +153,9 @@ describe("Proxify util", () => {
 	test("to throw when sorting an array target (shallow)", () => {
 		expect(() => {
 			proxify([1, 3, 2]).sort();
-		}).toThrow(/Mutation assertion failed\. `set` trap triggered on `target\[\d]`\./);
+		// See https://github.com/ota-meshi/eslint-plugin-regexp/issues/445
+		// eslint-disable-next-line unicorn/better-regex
+		}).toThrow(/Mutation assertion failed\. `set` trap triggered on `target\[\d\]`\./);
 	});
 	test("to throw when splicing an array target (shallow)", () => {
 		expect(() => {
@@ -167,7 +169,7 @@ describe("Proxify util", () => {
 	});
 	test("to throw when filling an array target (shallow)", () => {
 		expect(() => {
-			proxify(new Array(10)).fill("Filler? I hardly know her.", 2);
+			proxify(Array.from({length: 10})).fill("Filler? I hardly know her.", 2);
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `target[2]`.");
 	});
 	test("to throw when using Object.assign (shallow)", () => {
@@ -217,14 +219,14 @@ describe("Proxify util", () => {
 	*/
 	test("to work with other proxies as the target", () => {
 		const proxyProxy = proxify(new Proxy({test: "test"}, {}), {deep: true});
-		expect(proxyProxy.test).toEqual("test");
+		expect(proxyProxy.test).toBe("test");
 		expect(() => {
 			proxyProxy.test = "new";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `target.test`.");
 	});
 	test("to work with functions as the target", () => {
 		const proxyFunction = proxify(function functionName () {return "functionName";}, {deep: true});
-		expect(proxyFunction()).toEqual("functionName");
+		expect(proxyFunction()).toBe("functionName");
 		expect(() => {
 			proxyFunction.test = "new";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `functionName.test`.");
@@ -239,8 +241,8 @@ describe("Proxify util", () => {
 			}
 		};
 		const proxyClass = proxify(TestClass, {deep: true});
-		expect(proxyClass.staticBoi()).toEqual("staticBoi");
-		expect((new proxyClass()).instanceBoi()).toEqual("instanceBoi");
+		expect(proxyClass.staticBoi()).toBe("staticBoi");
+		expect((new proxyClass()).instanceBoi()).toBe("instanceBoi");
 		expect(() => {
 			proxyClass.staticBoi.test = "new";
 		}).toThrow("Mutation assertion failed. `set` trap triggered on `TestClass.staticBoi.test`.");
@@ -249,7 +251,7 @@ describe("Proxify util", () => {
 		const array = ["test", {}];
 		array["other prop with #$#@*$("] = "I found out I was one line away from 100% code cov and this is fun";
 		const proxyArray = proxify(array, {deep: true});
-		expect(proxyArray[0]).toEqual("test");
+		expect(proxyArray[0]).toBe("test");
 		expect(proxyArray[1]).toEqual({});
 		expect(() => {
 			proxyArray["other prop with #$#@*$("] = "why is 100% considered good? it doesn't mean anything lol";

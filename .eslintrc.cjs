@@ -12,6 +12,11 @@ module.exports = {
 		"plugin:evelyn/typescript",
 	],
 
+	"rules": {
+		// Reason: We currently support Node versions without this protocol
+		"unicorn/prefer-node-protocol": "off",
+	},
+
 	"overrides": [
 		{
 			"files": [
