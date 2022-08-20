@@ -6,6 +6,7 @@ updates:
       - dependency-type: production
     schedule:
       interval: "weekly"
+    versioning-strategy: increase
     commit-message:
       prefix: "Upgrade(npm):"
       prefix-development: "Upgrade(dev):"
