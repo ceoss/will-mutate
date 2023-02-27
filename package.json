@@ -48,13 +48,13 @@
 		"extends": "conventional-changelog-evelyn/release.config.js"
 	},
 	"dependencies": {
-		"@babel/cli": "^7.19.3",
+		"@babel/cli": "^7.21.0",
 		"@babel/parser": "^7.18.11",
 		"@babel/traverse": "^7.19.3",
 		"@babel/types": "^7.18.10"
 	},
 	"devDependencies": {
-		"@babel/cli": "^7.19.3",
+		"@babel/cli": "^7.21.0",
 		"@babel/core": "^7.18.10",
 		"@semantic-release/changelog": "^6.0.1",
 		"@semantic-release/git": "^10.0.1",
